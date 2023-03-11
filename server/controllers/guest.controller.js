@@ -7,7 +7,7 @@ const recommendRoom = async (req, res) => {
 		start_time = new Date(start_time);
 		end_time = new Date(end_time);
 	}
-	console.log(req.body);
+	// console.log(req.body);
 	const guestRooms = await guestDatabase.find({
 		room_type: room_type,
 	});
@@ -70,7 +70,6 @@ const addGuest = async (req, res) => {
 		room_type,
 		user_email,
 		room_number,
-		room_type,
 		start_time,
 		end_time,
 		booking_time: new Date(),
@@ -79,4 +78,40 @@ const addGuest = async (req, res) => {
 	res.send(guest);
 };
 
-module.exports = { recommendRoom, addGuest };
+const editGuest = async (req, res) => {
+	const { room_type, user_email, room_number, start_time, end_time } = req.body;
+
+	try {
+		const guest = await guestDatabase.updateOne(
+			{
+				_id: req.params.id,
+			},
+			{
+				room_type,
+				user_email,
+				room_number,
+				start_time,
+				end_time,
+			}
+		);
+
+		res.send(guest);
+	} catch (err) {
+		console.log(err);
+	}
+};
+
+const deleteGuest = async (req, res) => {
+	try {
+		const guest = await guestDatabase.deleteOne({
+			_id: req.params.id,
+		});
+
+		res.send(guest);
+	} catch (err) {
+		console.log(err);
+		res.status(501).send({ message: "Internal server error" });
+	}
+};
+
+module.exports = { recommendRoom, addGuest, editGuest, deleteGuest };
