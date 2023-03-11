@@ -6,8 +6,10 @@ const {
 	addGuest,
 	editGuest,
 	deleteGuest,
+	getAllGuests,
 } = require("../controllers/guest.controller");
 
+guestRouter.get("/", getAllGuests);
 guestRouter.post("/recommend", recommendRoom);
 guestRouter.post("/", addGuest);
 guestRouter.put("/:id", editGuest);

@@ -114,4 +114,20 @@ const deleteGuest = async (req, res) => {
 	}
 };
 
-module.exports = { recommendRoom, addGuest, editGuest, deleteGuest };
+const getAllGuests = async (req, res) => {
+	try {
+		const guests = await guestDatabase.find({});
+		res.send(guests);
+	} catch (err) {
+		console.log(err);
+		res.status(501).send({ message: "Internal server error" });
+	}
+};
+
+module.exports = {
+	recommendRoom,
+	addGuest,
+	editGuest,
+	deleteGuest,
+	getAllGuests,
+};
